@@ -44,7 +44,7 @@ public class TokenService {
 
         boolean admin = obj != null && (boolean) obj;
 
-        return new Participant(name,room,admin);
+        return new Participant(name,room,admin, token);
     }
 
 

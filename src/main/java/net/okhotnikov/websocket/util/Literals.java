@@ -28,4 +28,8 @@ public interface Literals {
     String Authorization = "Authorization";
     String ENTER_MESSAGE =" enters room ";
     String ENTER_MESSAGE_ANONYMOUS ="Anonymous enters room ";
+    String NO_PARTICIPANT_ON_DISCONNECT = "Connection was closed but no Participant found";
+    String NO_ROOM_PARTICIPANT_ON_DISCONNECT = "Connection was closed participant room not found: ";
+    String ROOM_IS_EMPTY = "Room become empty and is been closed";
+    String EXIT_MESSAGE =" Exits room ";
 }

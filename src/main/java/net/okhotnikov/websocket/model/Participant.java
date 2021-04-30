@@ -3,22 +3,25 @@ package net.okhotnikov.websocket.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.web.socket.WebSocketSession;
 
-import static net.okhotnikov.websocket.util.Literals.ENTER_MESSAGE;
-import static net.okhotnikov.websocket.util.Literals.ENTER_MESSAGE_ANONYMOUS;
+import java.util.Objects;
+
+import static net.okhotnikov.websocket.util.Literals.*;
 
 public class Participant {
     public String name;
     public String room;
-    public boolean isAdmin;
+    public boolean admin;
+    public String token;
     public WebSocketSession session;
 
     public Participant() {
     }
 
-    public Participant(String name, String room, boolean isAdmin) {
+    public Participant(String name, String room, boolean admin, String token) {
         this.name = name;
         this.room = room;
-        this.isAdmin = isAdmin;
+        this.admin = admin;
+        this.token = token;
     }
 
     public String getName() {
@@ -37,12 +40,12 @@ public class Participant {
         this.room = room;
     }
 
-    public boolean isAdmin() {
-        return isAdmin;
+    public boolean getAdmin() {
+        return admin;
     }
 
     public void setAdmin(boolean admin) {
-        isAdmin = admin;
+        admin = admin;
     }
 
     @JsonIgnore
@@ -55,6 +58,16 @@ public class Participant {
         this.session = session;
     }
 
+    @JsonIgnore
+    public String getToken() {
+        return token;
+    }
+
+    @JsonIgnore
+    public void setToken(String token) {
+        this.token = token;
+    }
+
     public String getId(){
         return this.session == null ? null : this.session.getId();
     }
@@ -62,5 +75,23 @@ public class Participant {
     @JsonIgnore
     public String enterMessage(){
         return name == null ? ENTER_MESSAGE_ANONYMOUS + room : name + ENTER_MESSAGE + room;
+    }
+
+    @JsonIgnore
+    public String exitMessage(){
+        return (name == null ? "" : name ) + EXIT_MESSAGE + room;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Participant that = (Participant) o;
+        return token.equals(that.token);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(token);
     }
 }

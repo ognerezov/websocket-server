@@ -6,6 +6,7 @@ import net.okhotnikov.websocket.service.TokenService;
 import net.okhotnikov.websocket.util.Literals;
 import org.springframework.stereotype.Service;
 import org.springframework.web.socket.BinaryMessage;
+import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
@@ -33,6 +34,12 @@ public class MessageHandler extends AbstractWebSocketHandler {
         Participant  participant = tokenService.decode(token);
         participant.session = session;
         roomService.enter(participant);
+    }
+
+    @Override
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        super.afterConnectionClosed(session, status);
+        roomService.exit(session.getId());
     }
 
     @Override
