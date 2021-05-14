@@ -1,6 +1,11 @@
 package net.okhotnikov.websocket.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public enum MessageType {
-    ParticipantEnter,
-    ParticipantExit
+    @JsonProperty("ParticipantEnter")ParticipantEnter,
+    @JsonProperty("ParticipantExit")ParticipantExit,
+    @JsonProperty("Broadcast")Broadcast,
+    @JsonProperty("Direct")Direct,
+    @JsonProperty("Control")Control
 }

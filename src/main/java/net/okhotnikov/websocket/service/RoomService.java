@@ -18,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static net.okhotnikov.websocket.util.Literals.*;
+import static net.okhotnikov.websocket.util.CommonUtils.*;
 
 @Service
 public class RoomService {
@@ -52,15 +53,18 @@ public class RoomService {
     }
 
     private void send(MessageType type, Room room) throws IOException {
-        String msg ="error";
-        try {
-            msg = mapper.writeValueAsString(new GenericMessage<>(type, room));
-        } catch (JsonProcessingException e) {
-            e.printStackTrace();
-        }
+        String msg = messageOrError(mapper,new GenericMessage<>(type, room));
         for(WebSocketSession session: room.sessions.values()){
             session.sendMessage(new TextMessage(msg));
         }
+    }
+
+    public <T> void broadcast(GenericMessage<T> message, WebSocketSession sender){
+        Participant participant = participants.remove(sender.getId());
+        Room room = rooms.get(participant.room);
+
+
+
     }
 
     public void exit(String sessionId) throws IOException{

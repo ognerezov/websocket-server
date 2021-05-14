@@ -1,6 +1,8 @@
 package net.okhotnikov.websocket.handler;
 
+import net.okhotnikov.websocket.model.GenericMessage;
 import net.okhotnikov.websocket.model.Participant;
+import net.okhotnikov.websocket.service.MessageProcessor;
 import net.okhotnikov.websocket.service.RoomService;
 import net.okhotnikov.websocket.service.TokenService;
 import net.okhotnikov.websocket.util.Literals;
@@ -20,10 +22,12 @@ public class MessageHandler extends AbstractWebSocketHandler {
 
     private final RoomService roomService;
     private final TokenService tokenService;
+    private final MessageProcessor processor;
 
-    public MessageHandler(RoomService roomService, TokenService tokenService) {
+    public MessageHandler(RoomService roomService, TokenService tokenService, MessageProcessor processor) {
         this.roomService = roomService;
         this.tokenService = tokenService;
+        this.processor = processor;
     }
 
     @Override
@@ -46,7 +50,8 @@ public class MessageHandler extends AbstractWebSocketHandler {
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         System.out.println(message);
         try {
-            session.sendMessage(message);
+            GenericMessage<String> in = processor.read(message.getPayload(), session);
+            System.out.println(in);
         } catch (IOException e) {
             e.printStackTrace();
         }

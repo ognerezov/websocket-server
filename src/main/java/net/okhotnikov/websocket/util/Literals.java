@@ -32,4 +32,5 @@ public interface Literals {
     String NO_ROOM_PARTICIPANT_ON_DISCONNECT = "Connection was closed participant room not found: ";
     String ROOM_IS_EMPTY = "Room become empty and is been closed";
     String EXIT_MESSAGE =" Exits room ";
+    String FAIL = "fail";
 }
