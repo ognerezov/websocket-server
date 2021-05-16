@@ -59,11 +59,16 @@ public class RoomService {
         }
     }
 
-    public <T> void broadcast(GenericMessage<T> message, WebSocketSession sender){
+    public <T> void broadcast(GenericMessage<T> message, WebSocketSession sender) throws IOException {
         Participant participant = participants.remove(sender.getId());
         Room room = rooms.get(participant.room);
 
+        String msg = messageOrError(mapper,message);
 
+        for(WebSocketSession session: room.sessions.values()){
+
+            session.sendMessage(new TextMessage(msg));
+        }
 
     }
 
