@@ -26,4 +26,5 @@ public  class GenericMessage<T> extends  BasicMessage{
                 ", data=" + data +
                 "} " + super.toString();
     }
+
 }

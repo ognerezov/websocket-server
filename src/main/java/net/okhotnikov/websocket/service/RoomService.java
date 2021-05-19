@@ -1,8 +1,6 @@
 package net.okhotnikov.websocket.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import net.okhotnikov.websocket.config.HandShaker;
 import net.okhotnikov.websocket.model.GenericMessage;
 import net.okhotnikov.websocket.model.MessageType;
 import net.okhotnikov.websocket.model.Participant;
@@ -38,8 +36,7 @@ public class RoomService {
 
         Room room;
         if(rooms.containsKey(participant.room)){
-            room =rooms
-                .get(participant.room);
+            room = getRoom(participant);
             room
                 .enter(participant);
         } else{
@@ -59,17 +56,13 @@ public class RoomService {
         }
     }
 
-    public <T> void broadcast(GenericMessage<T> message, WebSocketSession sender) throws IOException {
-        Participant participant = participants.remove(sender.getId());
-        Room room = rooms.get(participant.room);
+    public Room getRoom(Participant participant) {
+        return rooms.get(participant.room);
+    }
 
-        String msg = messageOrError(mapper,message);
 
-        for(WebSocketSession session: room.sessions.values()){
-
-            session.sendMessage(new TextMessage(msg));
-        }
-
+    public Participant getParticipant(String id) {
+        return participants.get(id);
     }
 
     public void exit(String sessionId) throws IOException{
@@ -79,7 +72,7 @@ public class RoomService {
             return;
         }
 
-        Room room = rooms.get(participant.room);
+        Room room = getRoom(participant);
 
         if (room == null){
             LOG.error(NO_ROOM_PARTICIPANT_ON_DISCONNECT);

@@ -1,5 +1,6 @@
 package net.okhotnikov.websocket.handler;
 
+import net.okhotnikov.websocket.config.MessageRouter;
 import net.okhotnikov.websocket.model.GenericMessage;
 import net.okhotnikov.websocket.model.Participant;
 import net.okhotnikov.websocket.service.MessageProcessor;
@@ -23,11 +24,13 @@ public class MessageHandler extends AbstractWebSocketHandler {
     private final RoomService roomService;
     private final TokenService tokenService;
     private final MessageProcessor processor;
+    private final MessageRouter router;
 
-    public MessageHandler(RoomService roomService, TokenService tokenService, MessageProcessor processor) {
+    public MessageHandler(RoomService roomService, TokenService tokenService, MessageProcessor processor, MessageRouter router) {
         this.roomService = roomService;
         this.tokenService = tokenService;
         this.processor = processor;
+        this.router = router;
     }
 
     @Override
@@ -52,6 +55,7 @@ public class MessageHandler extends AbstractWebSocketHandler {
         try {
             GenericMessage<String> in = processor.read(message.getPayload(), session);
             System.out.println(in);
+            router.receive(in,session);
         } catch (IOException e) {
             e.printStackTrace();
         }

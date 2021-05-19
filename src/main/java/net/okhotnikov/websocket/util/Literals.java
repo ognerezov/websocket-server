@@ -33,4 +33,7 @@ public interface Literals {
     String ROOM_IS_EMPTY = "Room become empty and is been closed";
     String EXIT_MESSAGE =" Exits room ";
     String FAIL = "fail";
+
+    String SENT = "sent";
+    String FORBIDDEN = "forbidden";
 }
