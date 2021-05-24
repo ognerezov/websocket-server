@@ -6,6 +6,8 @@ import net.okhotnikov.websocket.handler.MessageBox;
 import net.okhotnikov.websocket.handler.SecurityFilter;
 import net.okhotnikov.websocket.model.GenericMessage;
 import net.okhotnikov.websocket.service.RoomService;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
@@ -14,7 +16,7 @@ import java.io.IOException;
 import static net.okhotnikov.websocket.util.CommonMessages.*;
 
 public abstract class RoomMessageBox implements MessageBox {
-
+    protected static final Logger LOG = LogManager.getLogger(RoomMessageBox.class);
     protected RoomService roomService;
     protected SecurityFilter securityFilter;
     protected ObjectMapper mapper;
@@ -33,7 +35,7 @@ public abstract class RoomMessageBox implements MessageBox {
     public <T> void receive(GenericMessage<T> message, WebSocketSession sender) throws IOException {
         if (securityFilter.filter(message,sender))
             return;
-
+        LOG.error("User broadcast forbidden: " + sender.getId());
         sender.sendMessage(new TextMessage(forbidden(mapper)));
         throw new ForbiddenException();
     }

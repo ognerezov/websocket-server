@@ -1,9 +1,12 @@
 package net.okhotnikov.websocket.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import net.okhotnikov.websocket.model.in.ControlMessage;
 import org.springframework.web.socket.WebSocketSession;
 
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import static net.okhotnikov.websocket.util.Literals.*;
 
@@ -13,6 +16,7 @@ public class Participant {
     public boolean admin;
     public String token;
     public WebSocketSession session;
+    public Set<MessageType> authorities = new HashSet<>();
 
     public Participant() {
     }
@@ -93,5 +97,45 @@ public class Participant {
     @Override
     public int hashCode() {
         return Objects.hash(token);
+    }
+
+    public Set<MessageType> getAuthorities() {
+        return authorities;
+    }
+
+    public void setAuthorities(Set<MessageType> authorities) {
+        this.authorities = authorities;
+    }
+
+    @JsonIgnore
+    public boolean hasRole(MessageType role){
+        return authorities.contains(role);
+    }
+
+    @JsonIgnore
+    public void addRole(MessageType role){
+        authorities.add(role);
+    }
+
+    @JsonIgnore
+    public void removeRole(MessageType role){
+        authorities.remove(role);
+    }
+
+    @JsonIgnore
+    public boolean hasPermissionFor(MessageType messageType){
+        return  admin || hasRole(messageType);
+    }
+
+    @JsonIgnore
+    public Participant apply(ControlMessage controlMessage){
+
+        if (controlMessage.allow){
+            authorities.addAll(controlMessage.getAuthorities());
+        } else {
+            authorities.removeAll(controlMessage.getAuthorities());
+        }
+
+        return this;
     }
 }

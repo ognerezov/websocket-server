@@ -17,6 +17,10 @@ public class RoomRoleFilter implements SecurityFilter {
     @Override
     public <T> boolean filter(GenericMessage<T> message, WebSocketSession sender) {
         Participant participant = roomService.getParticipant(sender.getId());
-        return participant.admin;
+
+        if (participant == null)
+            return false;
+
+        return participant.hasPermissionFor(message.type);
     }
 }

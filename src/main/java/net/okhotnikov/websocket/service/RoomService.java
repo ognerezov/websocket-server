@@ -49,7 +49,7 @@ public class RoomService {
         send(MessageType.ParticipantEnter,room);
     }
 
-    private void send(MessageType type, Room room) throws IOException {
+    public void send(MessageType type, Room room) throws IOException {
         String msg = messageOrError(mapper,new GenericMessage<>(type, room));
         for(WebSocketSession session: room.sessions.values()){
             session.sendMessage(new TextMessage(msg));

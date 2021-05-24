@@ -28,6 +28,10 @@ public class BasicResponse {
         return new BasicResponse(OK,null);
     }
 
+    public static BasicResponse getOk(String details){
+        return new BasicResponse(OK,details);
+    }
+
     public static BasicResponse getFail(){
         return new BasicResponse(FAIL,null);
     }

@@ -36,4 +36,8 @@ public interface Literals {
 
     String SENT = "sent";
     String FORBIDDEN = "forbidden";
+    String PARTICIPANTS_ARE_MISSING = "participants are missing";
+    String PARSING_ERROR = "parsing error";
+    String INVALID_CONTROL_MESSAGE ="invalid control message";
+    String NOT_SUPPORTED_MESSAGE_TYPE = "message type not supported";
 }

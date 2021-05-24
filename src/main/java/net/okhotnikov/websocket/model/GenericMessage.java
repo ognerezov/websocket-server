@@ -23,8 +23,8 @@ public  class GenericMessage<T> extends  BasicMessage{
     public String toString() {
         return "GenericMessage{" +
                 "type=" + type +
+                ", participants=" + participants +
                 ", data=" + data +
                 "} " + super.toString();
     }
-
 }

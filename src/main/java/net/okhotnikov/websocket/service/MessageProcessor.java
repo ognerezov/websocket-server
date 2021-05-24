@@ -10,6 +10,7 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
+import static net.okhotnikov.websocket.util.CommonMessages.*;
 
 @Service
 public class MessageProcessor {
@@ -24,13 +25,7 @@ public class MessageProcessor {
             return mapper.readValue(text, new TypeReference<GenericMessage<T>>() {
             });
         }catch (Exception e){
-            String message = "{\"value\":\"fail\"}";
-            try {
-                 message = mapper.writeValueAsString(BasicResponse.getFail(e.getClass().getName()));
-            } catch (JsonProcessingException jsonProcessingException) {
-                jsonProcessingException.printStackTrace();
-            }
-            session.sendMessage(new TextMessage(message));
+            session.sendMessage(new TextMessage(parsingError(mapper)));
             return null;
         }
     }
