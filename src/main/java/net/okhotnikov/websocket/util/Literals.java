@@ -41,4 +41,5 @@ public interface Literals {
     String INVALID_CONTROL_MESSAGE ="invalid control message";
     String NOT_SUPPORTED_MESSAGE_TYPE = "message type not supported";
     String ADMINS_NOT_FOUND = "admins not found";
+    String ROOM_DISCONNECTED = "disconnected";
 }

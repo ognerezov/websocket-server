@@ -4,20 +4,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import net.okhotnikov.websocket.exceptions.MessageException;
 import net.okhotnikov.websocket.handler.SecurityFilter;
 import net.okhotnikov.websocket.model.GenericMessage;
-import net.okhotnikov.websocket.model.Participant;
 import net.okhotnikov.websocket.model.Room;
 import net.okhotnikov.websocket.service.RoomService;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 
 import java.io.IOException;
-import java.util.Objects;
 
+import static net.okhotnikov.websocket.util.CommonMessages.disconnected;
 import static net.okhotnikov.websocket.util.CommonMessages.sent;
-import static net.okhotnikov.websocket.util.CommonUtils.messageOrError;
 
-public class DirectMessageBox extends TargetedMessageBox{
-    public DirectMessageBox(RoomService roomService, SecurityFilter securityFilter, ObjectMapper mapper) {
+public class CloseBox extends RoomMessageBox{
+    public CloseBox(RoomService roomService, SecurityFilter securityFilter, ObjectMapper mapper) {
         super(roomService, securityFilter, mapper);
     }
 
@@ -29,22 +27,27 @@ public class DirectMessageBox extends TargetedMessageBox{
             return;
         }
 
-        TextMessage msg = new TextMessage(messageOrError(mapper,message));
+        Room room = roomService.getRoom(roomService.getParticipant(sender.getId()));
 
-        message
+        TextMessage msg = new TextMessage(disconnected(mapper));
+        room
                 .participants
                 .stream()
-                .map(id->roomService.getParticipant(id))
-                .filter(Objects::nonNull)
-                .map(target -> target.session)
+                .map(participant -> participant.session)
+                .filter(session -> !sender.getId().equals(session.getId()))
                 .forEach(session -> {
                     try {
                         session.sendMessage(msg);
+                        roomService.remove(session.getId());
+                        session.close();
                     } catch (IOException e) {
-                        LOG.error("Exception sending message to: " + session.getId());
+                        LOG.error("Error closing session: " + session.getId());
                     }
                 });
 
-        sender.sendMessage(new TextMessage(sent(mapper)));
+        sender.sendMessage(msg);
+        roomService.remove(sender.getId());
+        roomService.removeRoom(room.id);
+        sender.close();
     }
 }

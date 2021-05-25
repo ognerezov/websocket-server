@@ -1,7 +1,6 @@
 package net.okhotnikov.websocket.handler;
 
 import net.okhotnikov.websocket.config.MessageRouter;
-import net.okhotnikov.websocket.messageboxes.RoomMessageBox;
 import net.okhotnikov.websocket.model.GenericMessage;
 import net.okhotnikov.websocket.model.Participant;
 import net.okhotnikov.websocket.service.MessageProcessor;
@@ -62,20 +61,20 @@ public class MessageHandler extends AbstractWebSocketHandler {
                 LOG.error("Error parsing message: " + message.getPayload());
                 return;
             }
-            System.out.println(in);
+           // System.out.println(in);
             router.receive(in,session);
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
-    @Override
-    protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
-        System.out.println(message);
-        try {
-            session.sendMessage(message);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+//    @Override
+//    protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message) {
+//        System.out.println(message);
+//        try {
+//            session.sendMessage(message);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
 }

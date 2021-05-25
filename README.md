@@ -10,7 +10,7 @@
 data is full room description
 
 ### Broadcast
-{"type": "Broadcast","data": {"id":"eyJhbGciOiJIUzUxMiJ9"}}
+{"type": "Broadcast","data": {"some":"data"}}
 
 data - any String,Object field set
 
@@ -88,6 +88,23 @@ If applying control was successful, every participant will receive a message wit
 Message will be redirected to all participants with Control permission and to room admin
 
 This message type doesn't require any permissions or participant list
+
+### Disconnect
+{"type": "Disconnect"}
+
+Client should send it on user exit. No answer. No other requirements
+
+### Kick
+
+{"type":"Kick","participants":["9246c673-7127-2cdd-50f4-acaf26a5ae64"]}
+
+Disconnects a group of users from the room. Kick permission and participants list are required
+
+### Close
+
+{"type":"Close"}
+
+Disconnect all participants and closes a room. Sender must have Close permission
 
 
 

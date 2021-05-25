@@ -11,4 +11,7 @@ public enum MessageType {
     @JsonProperty("Direct")Direct,
     @JsonProperty("Control")Control,
     @JsonProperty("Petition")Petition,
+    @JsonProperty("Disconnect")Disconnect,
+    @JsonProperty("Kick")Kick,
+    @JsonProperty("Close")Close,
 }

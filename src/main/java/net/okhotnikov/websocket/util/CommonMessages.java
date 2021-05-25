@@ -38,4 +38,9 @@ public class CommonMessages {
     public static String notSupportedType(ObjectMapper mapper){
         return messageOrError(mapper,new GenericMessage<>(MessageType.ServerResponse,BasicResponse.getFail(NOT_SUPPORTED_MESSAGE_TYPE)));
     }
+
+    public static String disconnected(ObjectMapper mapper){
+        return messageOrError(mapper,new GenericMessage<>(MessageType.ServerResponse,BasicResponse.getOk(ROOM_DISCONNECTED)));
+    }
+
 }

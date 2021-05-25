@@ -68,7 +68,7 @@ public class RoomService {
     public void exit(String sessionId) throws IOException{
         Participant participant = participants.remove(sessionId);
         if (participant == null){
-            LOG.error(NO_PARTICIPANT_ON_DISCONNECT);
+//            LOG.error(NO_PARTICIPANT_ON_DISCONNECT);
             return;
         }
 
@@ -88,5 +88,13 @@ public class RoomService {
 
         send(MessageType.ParticipantExit,room);
 
+    }
+
+    public void remove(String id) {
+        participants.remove(id);
+    }
+
+    public void removeRoom(String id) {
+        rooms.remove(id);
     }
 }

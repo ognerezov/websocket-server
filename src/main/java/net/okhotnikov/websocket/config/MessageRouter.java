@@ -31,6 +31,9 @@ public class MessageRouter implements MessageBox {
         routes.put(MessageType.Control, new ControlMessageBox(roomService,roomRoleFilter,mapper));
         routes.put(MessageType.Direct, new DirectMessageBox(roomService,roomRoleFilter,mapper));
         routes.put(MessageType.Petition, new PetitionMessageBox(roomService,mapper));
+        routes.put(MessageType.Disconnect, new DisconnectMessageBox(roomService,mapper));
+        routes.put(MessageType.Kick, new KickBox(roomService,roomRoleFilter,mapper));
+        routes.put(MessageType.Close, new CloseBox(roomService,roomRoleFilter,mapper));
     }
 
     public MessageBox getRoute(MessageType type){

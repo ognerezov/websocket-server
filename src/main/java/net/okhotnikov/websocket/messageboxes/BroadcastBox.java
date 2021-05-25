@@ -32,12 +32,12 @@ public class BroadcastBox extends RoomMessageBox {
         Participant participant = roomService.getParticipant(sender.getId());
         Room room = roomService.getRoom(participant);
 
-        String msg = messageOrError(mapper,message);
+        TextMessage msg = new TextMessage(messageOrError(mapper,message));
 
         for(WebSocketSession session: room.sessions.values()){
             if(session.getId().equals(sender.getId()))
                 continue;
-            session.sendMessage(new TextMessage(msg));
+            session.sendMessage(msg);
         }
 
         sender.sendMessage(new TextMessage(sent(mapper)));
