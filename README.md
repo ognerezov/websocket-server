@@ -2,6 +2,13 @@
 
 ## Message types
 
+### Messages on someone enters or exits a room
+{"type":"ParticipantEnter","data":{"id":"148","participants":[{"name":"Иван Иванович","room":"148","admin":false,"authorities":[],"id":"be522d2f-2493-e92b-3f1b-1ab8f479b797"}]}}
+
+{"type":"ParticipantExit","data":{"id":"148","participants":[{"name":"Easy","room":"148","admin":true,"authorities":[],"id":"904f1a18-0dd7-172f-f7c9-e637a68775ba"}]}}
+
+data is full room description
+
 ### Broadcast
 {"type": "Broadcast","data": {"id":"eyJhbGciOiJIUzUxMiJ9"}}
 
@@ -16,15 +23,28 @@ Sender will get following response
 If a sender doesn't have broadcast, permission he will receive:
 {"type":"ServerResponse","data":{"value":"fail","details":"forbidden"}}
 
+### Direct
+
+{"type":"Direct","participants":["e12a61e9-d80e-6e50-0882-17d64768a782"],"data":{"some":"data"}}
+
+Message will be redirected to all recipients
+
+list of participants is mandatory. You'll get following message without the list
+
+{"type":"ServerResponse","data":{"value":"fail","details":"participants are missing"}}
+
+If a sender doesn't have Direct permission, he will receive:
+{"type":"ServerResponse","data":{"value":"fail","details":"forbidden"}}
+
 ### Control
 
 {"type":"Control","participants":["81375143-a238-273c-f976-3a10e9a26b6e"],"data":{"allow":true,"authorities":["Broadcast"]}}
 
-list of participants is mandatory. You'll get following message without th list
+list of participants is mandatory. You'll get following message without the list
 
 {"type":"ServerResponse","data":{"value":"fail","details":"participants are missing"}}
 
-If a sender doesn't have control, permission he will receive:
+If a sender doesn't have Control permission, he will receive:
 {"type":"ServerResponse","data":{"value":"fail","details":"forbidden"}}
 
 If applying control was successful, every participant will receive a message with new room data:
@@ -61,7 +81,13 @@ If applying control was successful, every participant will receive a message wit
 }
 }
 
+### Petition
 
+{"type":"Petition","data":{"some":"data"}}
+
+Message will be redirected to all participants with Control permission and to room admin
+
+This message type doesn't require any permissions or participant list
 
 
 

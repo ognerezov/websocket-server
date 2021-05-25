@@ -9,5 +9,6 @@ public enum MessageType {
     @JsonProperty("ServerResponse")ServerResponse,
     @JsonProperty("Broadcast")Broadcast,
     @JsonProperty("Direct")Direct,
-    @JsonProperty("Control")Control
+    @JsonProperty("Control")Control,
+    @JsonProperty("Petition")Petition,
 }

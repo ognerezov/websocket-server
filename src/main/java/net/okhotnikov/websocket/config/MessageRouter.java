@@ -2,9 +2,7 @@ package net.okhotnikov.websocket.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.okhotnikov.websocket.handler.MessageBox;
-import net.okhotnikov.websocket.messageboxes.BroadcastBox;
-import net.okhotnikov.websocket.messageboxes.ControlMessageBox;
-import net.okhotnikov.websocket.messageboxes.RoomMessageBox;
+import net.okhotnikov.websocket.messageboxes.*;
 import net.okhotnikov.websocket.model.GenericMessage;
 import net.okhotnikov.websocket.model.MessageType;
 import net.okhotnikov.websocket.security.RoomRoleFilter;
@@ -31,6 +29,8 @@ public class MessageRouter implements MessageBox {
 
         routes.put(MessageType.Broadcast,new BroadcastBox(roomService, roomRoleFilter, mapper));
         routes.put(MessageType.Control, new ControlMessageBox(roomService,roomRoleFilter,mapper));
+        routes.put(MessageType.Direct, new DirectMessageBox(roomService,roomRoleFilter,mapper));
+        routes.put(MessageType.Petition, new PetitionMessageBox(roomService,mapper));
     }
 
     public MessageBox getRoute(MessageType type){

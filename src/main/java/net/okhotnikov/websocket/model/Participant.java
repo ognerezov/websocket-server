@@ -138,4 +138,9 @@ public class Participant {
 
         return this;
     }
+
+    @JsonIgnore
+    public boolean doesAcceptPetitions(){
+        return admin || authorities.contains(MessageType.Control);
+    }
 }

@@ -9,6 +9,12 @@ import static net.okhotnikov.websocket.util.Literals.*;
 import static net.okhotnikov.websocket.util.CommonUtils.*;
 
 public class CommonMessages {
+
+    public static String text(ObjectMapper mapper, String text, boolean status){
+        return messageOrError(mapper,new GenericMessage<>(MessageType.ServerResponse,
+                new BasicResponse(status ? BasicResponse.OK : BasicResponse.FAIL, text)));
+    }
+
     public static String sent(ObjectMapper mapper){
         return messageOrError(mapper,new GenericMessage<>(MessageType.ServerResponse,BasicResponse.getOk(SENT)));
     }
