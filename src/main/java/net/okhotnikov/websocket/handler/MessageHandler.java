@@ -62,6 +62,7 @@ public class MessageHandler extends AbstractWebSocketHandler {
                 return;
             }
            // System.out.println(in);
+            in.from = session.getId();
             router.receive(in,session);
         } catch (IOException e) {
             e.printStackTrace();

@@ -1,5 +1,21 @@
 # Getting Started
 
+## Authentication
+
+Connect request must have Authorization header with JWT token
+
+Token is made by your authorization application and properly encoded:
+* Encryption algorithm HMAC using SHA-512
+* Secret and subject of the token are configured in application.yaml token:secret: and token:subject:fields 
+* Your Web Socket server and authorization application must have the same secrets and encryption algorithm
+
+Token must have claims required to identify a user:
+* name = displayed username
+* room = room identifier
+* admin = true if current user is a supper user 
+
+if connection is successful every user in the same room will receive ParticipantEnter message
+
 ## Message types
 
 ### Messages on someone enters or exits a room
@@ -22,6 +38,10 @@ Sender will get following response
 
 If a sender doesn't have broadcast, permission he will receive:
 {"type":"ServerResponse","data":{"value":"fail","details":"forbidden"}}
+
+When a message is redirected, it acquires "from" field with sender session id:
+
+{"type":"ServerResponse","data":{"value":"ok","details":"sent"}}
 
 ### Direct
 
